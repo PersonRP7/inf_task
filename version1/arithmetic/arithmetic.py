@@ -22,3 +22,7 @@ class Arithmetic:
     @staticmethod
     def factorial(a:int)->int:
         return factorial(int(a))
+
+    @staticmethod
+    def power_to(a:int, b:int)->int:
+        return int(a**b)
