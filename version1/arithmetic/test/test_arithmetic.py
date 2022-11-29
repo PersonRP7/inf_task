@@ -16,5 +16,17 @@ class TestArithmetic(unittest.TestCase):
     def test_addition_coerces_to_int(self):
         a = 2
         b = 2
-        res = Arithmetic.addition(2, 2)
+        res = Arithmetic.addition(a, b)
         self.assertEqual(int(4), res)
+
+    def test_subtraction_coerces_to_int(self):
+        a = 10
+        b = 5
+        res = Arithmetic.subtraction(a, b)
+        self.assertEqual(int(5), res)
+
+    def test_multiplication_coerces_to_int(self):
+        a = 10
+        b = 5
+        res = Arithmetic.multiplication(a, b)
+        self.assertEqual(int(50), res)
