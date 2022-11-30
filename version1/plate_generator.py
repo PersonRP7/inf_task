@@ -2,7 +2,11 @@ import random
 
 class PlateGenerator:
 
-    plates = []
+    # for i in PlateGenerator():
+    #     data.append(f"{i}-{random.randint(0, 9)}")
+
+    plates_int = []
+    plates_str = []
 
 
     @classmethod
@@ -10,7 +14,7 @@ class PlateGenerator:
         """
         Plate number creation.
         """
-        cls.plates = random.sample(
+        cls.plates_int = random.sample(
             range(100, 500), 400
         )
 
@@ -22,13 +26,12 @@ class PlateGenerator:
         Iterability is needed for hyphen addition in the
         penultimate position of a given plate number.
         """
-        for number in cls.plates:
+        for number in cls.plates_int:
             str(number)
 
 
     def __new__(cls) -> list:
         cls.generate_plates()
-        cls.stringify_plates()
         return cls.plates
 
 
