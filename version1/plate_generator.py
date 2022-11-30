@@ -1,7 +1,3 @@
-from mimetypes import init
-import numbers
-
-
 import random
 
 class PlateGenerator:
