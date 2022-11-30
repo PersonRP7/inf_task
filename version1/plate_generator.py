@@ -15,7 +15,8 @@ class PlateGenerator:
     @classmethod
     def generate_plates(cls)->None:
         """
-        Plate number creation.
+        3 digit plate root creation. Not used by itself.
+        Used by stringify_plates.
         """
         cls.plates_int = random.sample(
             range(100, 500), 400
@@ -23,6 +24,10 @@ class PlateGenerator:
 
     @classmethod
     def stringify_plates(cls)->None:
+        """
+        Populates the plates_str list with the 3 digit plates
+        suffixed by '-n' where n -> [0, 9].
+        """
         cls.generate_plates()
         for plate in cls.plates_int:
             cls.plates_str.append(f"{plate}-{random.randint(0, 9)}")
