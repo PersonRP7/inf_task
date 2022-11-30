@@ -11,8 +11,9 @@ class PlateGenerator:
         Plate number creation.
         """
         cls.plates = random.sample(
-            range(1000, 5000), 3000
+            range(100, 500), 400
         )
+
 
     @classmethod
     def stringify_plates(cls)->None:
