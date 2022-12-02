@@ -21,6 +21,7 @@ class Arithmetic:
 
     @staticmethod
     def factorial(a:int)->int:
+        """Namespacing with math.factorial?"""
         return factorial(int(a))
 
     @staticmethod
