@@ -1,25 +1,29 @@
-import csv
-from email import header
-
 import numpy as np
 from itertools import product
 from math import factorial
 from typing import Union, Callable, Tuple, List, Set
+import csv_generator
+
 
 def plus(a: int, b: int) -> int:
     return a + b
 
+
 def minus(a: int, b: int) -> int:
     return a - b
+
 
 def mult(a: int, b: int) -> int:
     return a * b
 
+
 def div(a: int, b: int) -> Union[int, float]:
-    if b != 0:
-        if a % b == 0:
-            return a // b
-    return np.nan
+    try:
+        retval = int(a / b)
+    except (ValueError, ZeroDivisionError):
+        retval = np.nan
+    return retval
+
 
 def the_factorial(a: int) -> Union[int, float]:
     try:
@@ -29,17 +33,20 @@ def the_factorial(a: int) -> Union[int, float]:
     except OverflowError:
         return np.inf
 
+
 def power_to(a: int, b: int) -> Union[int, float]:
     try:
         return int(a ** b)
     except (ValueError, ZeroDivisionError):
         return np.nan
 
+
 def root(a: int, b: int) -> Union[int, float]:
     try:
         return int(b ** (1 / a))
     except (TypeError, ZeroDivisionError, ValueError):
         return np.nan
+
 
 def solve(values: Tuple[int, int, int], ops: List[Callable]) -> list[Tuple[str, int]]:
     # Iterate over available functions.
@@ -69,21 +76,22 @@ def solve(values: Tuple[int, int, int], ops: List[Callable]) -> list[Tuple[str, 
                 eq_str = f"{ext_op.__name__}({sx}, {int_op.__name__}({sy}, {sz}))"
                 eq_val = ext_op(x, int_op(y, z))
                 combs.append((eq_str, eq_val))
-                # TODO: Create equations by appling unitary operations (e.g.: 'the_factorial()') on members.
     return combs
+
 
 def inverter(data: List[int]) -> List[Tuple[int, int, int]]:
     inverted_data = [-x for x in data]
     res = list(product(*zip(data, inverted_data)))
     return res
 
+
 # Data to process.
 INITIAL_DATA: List[str] = [
     "518-2",
-    '533-3',
+    # '533-3',
     # '534-0',
     # '000-3',
-    # '000-4'
+    '000-4'
 ]
 # Available functions.
 FUNCTIONS: List[Callable] = [   # the_factorial() removed, see solve().
@@ -97,17 +105,23 @@ FUNCTIONS: List[Callable] = [   # the_factorial() removed, see solve().
 # Get posible combinations to apply the factor operation.
 FACTORS: Set[Tuple] = set(product([1, 0, 0], repeat=3))
 
+
 def main():
-    print("number, solution, result")
-    cases = 0   # Count all possible cases for the sake of curiosity :)
+    cases = 0       # Count all possible cases (for each input value).
+    data = list()   # List with all final data to be dumped in CSV.
+    print("number, solution, number_of_solutions")
+    csv_data = []
+    # Iterate over all initial data.
     for eq in INITIAL_DATA:
         # Get values before and after the hyphen.
         nums, res = eq.split('-')
+        res = int(res)
         # Get combinations with inverted values.
         combs = inverter([int(n) for n in list(nums)])
         # Iterate over combinations and generate a list with their many possible solutions.
-        solutions = [solve(i, FUNCTIONS) for i in combs]
-        for i in solutions:
+        sol_cnt = 0         # Number of solutions (for each input value).
+        solutions = list()  # List with all final data to be dumped in CSV.
+        for i in [solve(i, FUNCTIONS) for i in combs]:
             for j in i:
                 str_repr, value = j
                 # Some values exceed the 4300 digits, hence the 'try-catch'.
@@ -116,23 +130,26 @@ def main():
                     str(value)
                 except ValueError:
                     value = np.inf
-                print(f"{eq}, {str_repr} = {value}, {res}")
+                if value == res:
+                    sol_cnt += 1
+                solutions.append((eq, str_repr, value))
                 cases += 1
+        # Iterate over all data gathered, and add number of solutions.
+        for i in range(len(solutions)):
+            eq, str_repr, value = solutions[i]
+            solutions[i] += (sol_cnt,)
+            print(f"{eq}, {str_repr} = {value}, {sol_cnt}")
+            csv_data.append([f"{eq}, {str_repr} = {value}, {sol_cnt}"])
+        data.extend(solutions)
+        # Print all the solutions for this input.
+        print(f"\nThese are the {sol_cnt} solutions for input {eq}:")
+        solutions = [s for s in solutions if (type(s[2]) is int and s[2] == res)]
+        for i in range(len(solutions)):
+            print(f"    {i:4}. {solutions[i][1]}")
+        print()
     print(f"\nTotal cases: {cases}")
+    # csv_generator.create_csv(csv_data)
+    print(csv_data)
 
 if __name__ == "__main__":
     main()
-
-# header = ['name', 'area', 'country_code2', 'country_code3']
-# data = ['Afghanistan', 652090, 'AF', 'AFG']
-
-# with open('countries.csv', 'w', encoding='UTF8') as f:
-#     writer = csv.writer(f)
-
-#     # write the header
-#     writer.writerow(header)
-
-#     # write the data
-#     writer.writerow(data)
-
-header = ['plate_num', 'solution', 'total_num']
