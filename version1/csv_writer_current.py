@@ -157,7 +157,6 @@ def main():
     data = list()   # List with all final data to be dumped in CSV.
     # print("number, solution, number_of_solutions")
     csv_data = []
-    csv_data_match = []
     # Iterate over all initial data.
     for eq in INITIAL_DATA:
         # Get values before and after the hyphen.
@@ -200,11 +199,10 @@ def main():
     #     print()
     # print(f"\nTotal cases: {cases}")
     # csv_generator.create_csv(csv_data)
-    # csv_data = csv_preprocessor.CSVPreprocessor.get_unique(csv_data)
-    # print(csv_data)
+    csv_data = csv_preprocessor.CSVPreprocessor.get_unique(csv_data)
+    print(csv_data)
     # csv_preprocessor.CSVPreprocessor.create_csv(csv_data)
     # print(csv_preprocessor.CSVPreprocessor.get_unique(csv_data))
-    csv_preprocessor.get_solution(csv_data)
 
 if __name__ == "__main__":
     main()
