@@ -204,7 +204,7 @@ def main():
     # print(csv_data)
     # csv_preprocessor.CSVPreprocessor.create_csv(csv_data)
     # print(csv_preprocessor.CSVPreprocessor.get_unique(csv_data))
-    csv_preprocessor.get_solution(csv_data)
+    csv_preprocessor.CSVPreprocessor.get_solution(csv_data)
 
 if __name__ == "__main__":
     main()

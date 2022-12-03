@@ -43,4 +43,17 @@ class CSVPreprocessor:
                                                     key = designated_version),
                                             designated_version)]
 
+    @staticmethod
+    def get_solution(data):
+        for lst in data:
+            for stmnt in lst:
+                # print(stmnt.split(",")[-1])
+                after_hyphen = stmnt.split("-")[1][0]
+                after_hyphen.strip()
+                digit = re.findall(r'=([^,]*),', stmnt)[0]
+                digit.strip()
+        # print(f"{after_hyphen} : {digit}")
+                if int(after_hyphen) == int(digit):
+                    return lst
+
     
