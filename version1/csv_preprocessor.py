@@ -14,3 +14,12 @@ class CSVPreprocessor:
             writer.writerow(header)
             for i in data:
                 writer.writerow(i)
+
+    @staticmethod
+    def get_unique(data):
+        def designated_version(item):
+            return item[0].split(',')[0]
+
+        return [list(v)[0] for _, v in groupby(sorted(data, 
+                                                    key = designated_version),
+                                            designated_version)]
