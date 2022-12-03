@@ -2,6 +2,7 @@ import stat
 
 
 import csv
+from itertools import groupby
 
 class CSVPreprocessor:
 

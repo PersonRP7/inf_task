@@ -2,7 +2,7 @@ import numpy as np
 from itertools import product
 from math import factorial
 from typing import Union, Callable, Tuple, List, Set
-import csv_generator
+import csv_preprocessor
 
 
 def plus(a: int, b: int) -> int:
@@ -109,7 +109,7 @@ FACTORS: Set[Tuple] = set(product([1, 0, 0], repeat=3))
 def main():
     cases = 0       # Count all possible cases (for each input value).
     data = list()   # List with all final data to be dumped in CSV.
-    print("number, solution, number_of_solutions")
+    # print("number, solution, number_of_solutions")
     csv_data = []
     # Iterate over all initial data.
     for eq in INITIAL_DATA:
@@ -144,12 +144,13 @@ def main():
         # Print all the solutions for this input.
         print(f"\nThese are the {sol_cnt} solutions for input {eq}:")
         solutions = [s for s in solutions if (type(s[2]) is int and s[2] == res)]
-        for i in range(len(solutions)):
-            print(f"    {i:4}. {solutions[i][1]}")
-        print()
-    print(f"\nTotal cases: {cases}")
+        # for i in range(len(solutions)):
+        #     print(f"    {i:4}. {solutions[i][1]}")
+        # print()
+    # print(f"\nTotal cases: {cases}")
     # csv_generator.create_csv(csv_data)
-    print(csv_data)
+    # print(csv_data)
+    csv_preprocessor.CSVPreprocessor.create_csv(csv_data)
 
 if __name__ == "__main__":
     main()
