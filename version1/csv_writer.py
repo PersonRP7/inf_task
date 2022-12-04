@@ -195,6 +195,21 @@ def main():
         # Print all the solutions for this input.
         # print(f"\nThese are the {sol_cnt} solutions for input {eq}:")
         solutions = [s for s in solutions if (type(s[2]) is int and s[2] == res)]
+
+        # return print(csv_preprocessor.CSVPreprocessor.get_csv_final(csv_data))
+
+        # Works
+        return print(csv_preprocessor.CSVPreprocessor.get_matching(csv_data))
+        # /Works
+
+        # This also works
+        # return print(csv_preprocessor.get_matching(csv_data))
+        # /This also works
+        # This works
+        # import csv3
+        # csv3.get_matching(csv_data)
+        # /This works
+        # print(csv_data)
     #     for i in range(len(solutions)):
     #         print(f"    {i:4}. {solutions[i][1]}")
     #     print()
@@ -204,7 +219,15 @@ def main():
     # print(csv_data)
     # csv_preprocessor.CSVPreprocessor.create_csv(csv_data)
     # print(csv_preprocessor.CSVPreprocessor.get_unique(csv_data))
-    csv_preprocessor.CSVPreprocessor.get_solution(csv_data)
+    # csv_preprocessor.CSVPreprocessor.get_solution(csv_data)
+    # csv_data_match.append(csv_preprocessor.CSVPreprocessor.get_solution(get_unique(csv_data)))
+    # csv_data_match.append(
+    #     csv_preprocessor.CSVPreprocessor.get_solution(
+    #         csv_preprocessor.CSVPreprocessor.get_unique(csv_data)
+    #     )
+    # )
+    # csv_data_match.append(csv_preprocessor.get_solution(csv_data))
+    # print(csv_data_match)
 
 if __name__ == "__main__":
     main()
