@@ -93,20 +93,43 @@ class CSVPreprocessor:
                                                     key = designated_version),
                                             designated_version)]
 
+
+
+    #First pass
     @staticmethod
     def get_matching(data):
-#     #This works
         removed_nan = []
-        matches = []
+        w_solution = []
+        wo_solution = []
         for lst in data:
             for stmnt in lst:
                 solution = re.findall(r'=([^,]*),', stmnt)[0]
                 after_hyphen = stmnt.split("-")[1][0]
-                if solution != " nan":
-                    removed_nan.append(lst)
-                if (solution == after_hyphen):
-                    matches.append(lst)
-        return matches
+                if (solution != " nan" and int(solution) == int(after_hyphen)):
+                    w_solution.append(lst)
+                if (solution != " nan" and int(solution) != int(after_hyphen)):
+                    wo_solution.append(lst)
+
+        w_solution_unique = CSVPreprocessor.get_unique(w_solution)
+        wo_solutin_unique = CSVPreprocessor.get_unique(wo_solution)
+        print(w_solution_unique)
+        print("######################")
+        print(wo_solutin_unique)
+
+#     @staticmethod
+#     def get_matching(data):
+# #     #This works
+#         removed_nan = []
+#         matches = []
+#         for lst in data:
+#             for stmnt in lst:
+#                 solution = re.findall(r'=([^,]*),', stmnt)[0]
+#                 after_hyphen = stmnt.split("-")[1][0]
+#                 if solution != " nan":
+#                     removed_nan.append(lst)
+#                 if (solution == after_hyphen):
+#                     matches.append(lst)
+#         return matches
 
 #     @staticmethod
 #     def get_matching(data):

@@ -51,12 +51,17 @@ def get_matching(data):
 
     w_solution_unique = get_unique(w_solution)
     wo_solutin_unique = get_unique(wo_solution)
-    combined = w_solution_unique + wo_solutin_unique
-    return combined
+    # print(w_solution_unique)
+    # print("#################")
+    # print(wo_solutin_unique)
+    # combined = w_solution_unique + wo_solutin_unique
+    # return combined
     # print(w_solution)
     # print(wo_solution)
 
-print(get_matching(data))
+# get_matching(data)
+
+# print(get_matching(data))
 # def get_matching(data):
 
 #     #This works

@@ -31,7 +31,8 @@ def the_factorial(a: int) -> Union[int, float]:
     except ValueError:
         return np.nan
     except OverflowError:
-        return np.inf
+        # return np.inf
+        return np.nan
 
 
 def power_to(a: int, b: int) -> Union[int, float]:
@@ -196,10 +197,12 @@ def main():
         # print(f"\nThese are the {sol_cnt} solutions for input {eq}:")
         solutions = [s for s in solutions if (type(s[2]) is int and s[2] == res)]
 
+        # return csv_preprocessor.CSVPreprocessor.get_matching(csv_data)
+
         # return print(csv_preprocessor.CSVPreprocessor.get_csv_final(csv_data))
 
         # Works
-        return print(csv_preprocessor.CSVPreprocessor.get_matching(csv_data))
+        # return print(csv_preprocessor.CSVPreprocessor.get_matching(csv_data))
         # /Works
 
         # This also works
