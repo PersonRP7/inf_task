@@ -2,7 +2,55 @@ import numpy as np
 from itertools import product
 from math import factorial
 from typing import Union, Callable, Tuple, List, Set
+import re
 import csv_preprocessor
+
+def get_matching(data):
+    removed_nan = []
+    w_solution = []
+    wo_solution = []
+    the_solutions = []
+    for lst in data:
+        for stmnt in lst:
+            solution = re.findall(r'=([^,]*),', stmnt)[0]
+            after_hyphen = stmnt.split("-")[1][0]
+            if (solution != " nan" and int(solution) == int(after_hyphen)):
+                w_solution.append(lst)
+            if (solution != " nan" and int(solution) != int(after_hyphen)):
+                wo_solution.append(lst)
+
+    joined_list = [*w_solution, *wo_solution]
+    return joined_list
+    # w_combined =  w_solution + wo_solution #used for second pass
+
+def get_matching_final(data):
+        matching_middle = []
+        non_matching_middle = []
+
+        matching_final = []
+        nonmatching_final = []
+        # keys = []
+
+        for lst in data:
+            for stmnt in lst:
+                solution = re.findall(r'=([^,]*),', stmnt)[0]
+                after_hyphen = stmnt.split("-")[1][0]
+                #key
+                key = stmnt.split(",")[0]
+                # keys.append(key)
+                #/key
+                if (int(solution) == int(after_hyphen)):
+                    matching_middle.append(lst)
+                elif (int(solution) != int(after_hyphen)):
+                    non_matching_middle.append(lst)
+
+        wd = {s[0].split(',')[0]: s[0] for s in matching_middle}
+        wod = {s[0].split(',')[0]: s[0] for s in non_matching_middle}
+        keys = sorted(set(wd.keys()).union(wod.keys()), reverse=True)
+        final = [[wd[k]] if k in wd else [wod[k]] for k in keys]
+        # final_list = [x for x in final]
+        # final_list_unique = np.unique(final_list) 
+        return final
 
 
 def plus(a: int, b: int) -> int:
@@ -88,10 +136,10 @@ def inverter(data: List[int]) -> List[Tuple[int, int, int]]:
 
 # Data to process.
 INITIAL_DATA: List[str] = [
-    # "518-2",
+    "518-2",
     # '533-3',
     # '534-0',
-    '000-3',
+    # '000-3',
     '000-4'
 ]
 # Available functions.
@@ -106,52 +154,6 @@ FUNCTIONS: List[Callable] = [   # the_factorial() removed, see solve().
 # Get posible combinations to apply the factor operation.
 FACTORS: Set[Tuple] = set(product([1, 0, 0], repeat=3))
 
-
-# def main():
-#     cases = 0       # Count all possible cases (for each input value).
-#     data = list()   # List with all final data to be dumped in CSV.
-#     # print("number, solution, number_of_solutions")
-#     csv_data = []
-#     # Iterate over all initial data.
-#     for eq in INITIAL_DATA:
-#         # Get values before and after the hyphen.
-#         nums, res = eq.split('-')
-#         res = int(res)
-#         # Get combinations with inverted values.
-#         combs = inverter([int(n) for n in list(nums)])
-#         # Iterate over combinations and generate a list with their many possible solutions.
-#         sol_cnt = 0         # Number of solutions (for each input value).
-#         solutions = list()  # List with all final data to be dumped in CSV.
-#         for i in [solve(i, FUNCTIONS) for i in combs]:
-#             for j in i:
-#                 str_repr, value = j
-#                 # Some values exceed the 4300 digits, hence the 'try-catch'.
-#                 # The function 'sys.set_int_max_str_digits()' may be used instead to increase the str() capabilites.
-#                 try:
-#                     str(value)
-#                 except ValueError:
-#                     value = np.inf
-#                 if value == res:
-#                     sol_cnt += 1
-#                 solutions.append((eq, str_repr, value))
-#                 cases += 1
-#         # Iterate over all data gathered, and add number of solutions.
-#         for i in range(len(solutions)):
-#             eq, str_repr, value = solutions[i]
-#             solutions[i] += (sol_cnt,)
-#             print(f"{eq}, {str_repr} = {value}, {sol_cnt}")
-#             csv_data.append([f"{eq}, {str_repr} = {value}, {sol_cnt}"])
-#         data.extend(solutions)
-#         # Print all the solutions for this input.
-#         print(f"\nThese are the {sol_cnt} solutions for input {eq}:")
-#         solutions = [s for s in solutions if (type(s[2]) is int and s[2] == res)]
-#         # for i in range(len(solutions)):
-#         #     print(f"    {i:4}. {solutions[i][1]}")
-#         # print()
-#     # print(f"\nTotal cases: {cases}")
-#     # csv_generator.create_csv(csv_data)
-#     # print(csv_data)
-#     csv_preprocessor.CSVPreprocessor.create_csv(csv_data)
 
 def main():
     cases = 0       # Count all possible cases (for each input value).
@@ -197,47 +199,28 @@ def main():
         # print(f"\nThese are the {sol_cnt} solutions for input {eq}:")
         solutions = [s for s in solutions if (type(s[2]) is int and s[2] == res)]
 
-        print(csv_preprocessor.CSVPreprocessor.get_matching(csv_data))
-        # return csv_preprocessor.CSVPreprocessor.get_matching(csv_data)
-
-        # csv_preprocessor.CSVPreprocessor.create_csv(csv_preprocessor.CSVPreprocessor.get_matching(csv_data))
-        # return print(csv_preprocessor.CSVPreprocessor.get_matching(csv_data))
         # print(csv_data)
+        # print(get_matching(csv_data))
+        # print(get_matching_final(get_matching(csv_data))[0])
+        f_data = [] #-1
+        for i in get_matching_final(get_matching(csv_data)):
+            # print(i)
+            f_data.append(i)
+        print(f_data[-1])
+        # print(csv_preprocessor.CSVPreprocessor.get_matching(csv_data))
         # return csv_preprocessor.CSVPreprocessor.get_matching(csv_data)
-        # csv_preprocessor.CSVPreprocessor.create_csv(csv_preprocessor.CSVPreprocessor.get_matching(csv_data))
+        csv_preprocessor.CSVPreprocessor.create_csv(f_data[-1])
 
-        # return print(csv_preprocessor.CSVPreprocessor.get_csv_final(csv_data))
 
-        # Works
-        # return print(csv_preprocessor.CSVPreprocessor.get_matching(csv_data))
-        # /Works
 
-        # This also works
-        # return print(csv_preprocessor.get_matching(csv_data))
-        # /This also works
-        # This works
-        # import csv3
-        # csv3.get_matching(csv_data)
-        # /This works
-        # print(csv_data)
-    #     for i in range(len(solutions)):
-    #         print(f"    {i:4}. {solutions[i][1]}")
-    #     print()
-    # print(f"\nTotal cases: {cases}")
-    # csv_generator.create_csv(csv_data)
-    # csv_data = csv_preprocessor.CSVPreprocessor.get_unique(csv_data)
-    # print(csv_data)
-    # csv_preprocessor.CSVPreprocessor.create_csv(csv_data)
-    # print(csv_preprocessor.CSVPreprocessor.get_unique(csv_data))
-    # csv_preprocessor.CSVPreprocessor.get_solution(csv_data)
-    # csv_data_match.append(csv_preprocessor.CSVPreprocessor.get_solution(get_unique(csv_data)))
-    # csv_data_match.append(
-    #     csv_preprocessor.CSVPreprocessor.get_solution(
-    #         csv_preprocessor.CSVPreprocessor.get_unique(csv_data)
-    #     )
-    # )
-    # csv_data_match.append(csv_preprocessor.get_solution(csv_data))
-    # print(csv_data_match)
+
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
+

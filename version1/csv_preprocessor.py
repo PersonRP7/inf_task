@@ -93,6 +93,72 @@ class CSVPreprocessor:
                                                     key = designated_version),
                                             designated_version)]
 
+    @staticmethod
+    def get_matching_final(data):
+        matching_middle = []
+        non_matching_middle = []
+
+        matching_final = []
+        nonmatching_final = []
+        # keys = []
+
+        for lst in data:
+            for stmnt in lst:
+                solution = re.findall(r'=([^,]*),', stmnt)[0]
+                after_hyphen = stmnt.split("-")[1][0]
+                #key
+                key = stmnt.split(",")[0]
+                # keys.append(key)
+                #/key
+                if (int(solution) == int(after_hyphen)):
+                    matching_middle.append(lst)
+                elif (int(solution) != int(after_hyphen)):
+                    non_matching_middle.append(lst)
+
+        wd = {s[0].split(',')[0]: s[0] for s in matching_middle}
+        wod = {s[0].split(',')[0]: s[0] for s in non_matching_middle}
+        keys = sorted(set(wd.keys()).union(wod.keys()), reverse=True)
+        final = [[wd[k]] if k in wd else [wod[k]] for k in keys]
+        final_list = [x for x in final]
+        final_list_unique = np.unique(final_list) 
+        return final_list_unique
+        
+
+        # keys_unique_set = set(keys)
+        # keys_unique_lst = []
+        # for k in keys_unique_set:
+        #     keys_unique_lst.append(k)
+        # print(keys_unique_lst)
+
+        # for lst in data:
+        #     for stmnt in lst:
+        #         solution = re.findall(r'=([^,]*),', stmnt)[0]
+        #         after_hyphen = stmnt.split("-")[1][0]
+        #         if (int(solution) == int(after_hyphen)):
+        #             matching_middle.append(lst)
+        #         if (int(solution) != int(after_hyphen)):
+        #             non_matching_middle.append(lst)
+
+        # return matching_middle
+        # print(matching_middle)
+        # print(non_matching_middle)
+        # wd = {s[0].split(',')[0]: s[0] for s in matching_middle}
+        # wod = {s[0].split(',')[0]: s[0] for s in non_matching_middle}
+
+        # return wod
+
+        # print(matching_middle)
+        # print(non_matching_middle)
+        # wd = {s[0].split(',')[0]: s[0] for s in matching_middle}
+        # wod = {s[0].split(',')[0]: s[0] for s in non_matching_middle}
+        # # return wod
+        # for k, v in wd.items():
+        #     matching_final.append([v])
+
+        # for k, v in wod.items():
+        #     nonmatching_final.append([v])
+        # combined_final = matching_final + nonmatching_final
+        # return combined_final
 
 
     #First pass
@@ -110,11 +176,13 @@ class CSVPreprocessor:
                 if (solution != " nan" and int(solution) != int(after_hyphen)):
                     wo_solution.append(lst)
 
-        w_solution_unique = CSVPreprocessor.get_unique(w_solution)
-        wo_solutin_unique = CSVPreprocessor.get_unique(wo_solution)
-        print(w_solution_unique)
-        print("######################")
-        print(wo_solutin_unique)
+        w_combined =  w_solution + wo_solution #used for second pass
+        # return w_combined
+        # return CSVPreprocessor.get_matching_final(w_combined)
+        return CSVPreprocessor.get_matching_final(w_combined)
+
+
+
 
 #     @staticmethod
 #     def get_matching(data):
