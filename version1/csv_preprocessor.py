@@ -75,14 +75,22 @@ import numpy as np
 
 class CSVPreprocessor:
 
+    # @staticmethod
+    # def create_csv(data):
+    #     header = ['plate_num', 'solution', 'total_num']
+    #     with open('registration.csv', 'a', encoding='UTF8') as f:
+    #         writer = csv.writer(f, delimiter='\t',lineterminator='\n')
+    #         writer.writerow(header)
+    #         for i in data:
+    #             writer.writerow(i)
     @staticmethod
     def create_csv(data):
         header = ['plate_num', 'solution', 'total_num']
-        with open('registration.csv', 'a', encoding='UTF8') as f:
-            writer = csv.writer(f, delimiter='\t',lineterminator='\n')
-            writer.writerow(header)
-            for i in data:
-                writer.writerow(i)
+        with open('registration.csv', mode='w', newline='') as csv_file:
+            csv_writer = csv.writer(csv_file)
+            csv_writer.writerow(header)
+            for row in data:
+                csv_writer.writerow(row)
 
     @staticmethod
     def get_unique(data):

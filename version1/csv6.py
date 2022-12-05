@@ -5,6 +5,29 @@ from typing import Union, Callable, Tuple, List, Set
 import re
 # import csv_preprocessor
 import csv
+import random
+
+# 
+def data_to_dict(data):
+    output={}
+    for s in data:
+        whole_string = s[0]
+        parts = [x.strip() for x in whole_string.split(',')]
+        identifier = parts[0]
+        result = parts[-2].split('=')[-1].strip()
+        digit = identifier.split('-')[-1]
+
+        output.setdefault(identifier,[]).append((whole_string,identifier,digit,result))
+
+    return output
+
+def choice_default_element(lines):
+    #your logic for chosing a line when there's no line match
+
+    #random chilce
+    return random.choice(lines)[0]
+#
+
 
 def create_csv(data):
     header = ['plate_num', 'solution', 'total_num']
@@ -33,33 +56,49 @@ def get_matching(data):
     # w_combined =  w_solution + wo_solution #used for second pass
 
 def get_matching_final(data):
-        matching_middle = []
-        non_matching_middle = []
+    data_dt = data_to_dict(data)
+    collected = []
+    for code, lines in data_dt.items():
+        for whole_string, code, digit, result in lines:
+            if digit == result:
+                collected.append(whole_string)
+                break
+        else:
+            collected.append(choice_default_element(lines))
 
-        matching_final = []
-        nonmatching_final = []
+    stuff = [x for x in collected]
+    return stuff[-1][0]
+        # matching_middle = []
+        # non_matching_middle = []
+
+        # matching_final = []
+        # nonmatching_final = []
         # keys = []
 
-        for lst in data:
-            for stmnt in lst:
-                solution = re.findall(r'=([^,]*),', stmnt)[0]
-                after_hyphen = stmnt.split("-")[1][0]
+        # for lst in data:
+        #     for stmnt in lst:
+        #         solution = re.findall(r'=([^,]*),', stmnt)[0]
+        #         after_hyphen = stmnt.split("-")[1][0]
+        #         if int(solution) == int(after_hyphen):
+        #             print(stmnt)
+   
                 #key
-                key = stmnt.split(",")[0]
+                # key = stmnt.split(",")[0]
+                
                 # keys.append(key)
+    
                 #/key
-                if (int(solution) == int(after_hyphen)):
-                    matching_middle.append(lst)
-                elif (int(solution) != int(after_hyphen)):
-                    non_matching_middle.append(lst)
+                # if (int(solution) == int(after_hyphen)):
+                #     matching_middle.append(lst)
+                # elif (int(solution) != int(after_hyphen)):
+                #     non_matching_middle.append(lst)
+        
 
-        wd = {s[0].split(',')[0]: s[0] for s in matching_middle}
-        wod = {s[0].split(',')[0]: s[0] for s in non_matching_middle}
-        keys = sorted(set(wd.keys()).union(wod.keys()), reverse=True)
-        final = [[wd[k]] if k in wd else [wod[k]] for k in keys]
-        # final_list = [x for x in final]
-        # final_list_unique = np.unique(final_list) 
-        return final
+        # wd = {s[0].split(',')[0]: s[0] for s in matching_middle}
+        # wod = {s[0].split(',')[0]: s[0] for s in non_matching_middle}
+        # keys = sorted(set(wd.keys()).union(wod.keys()), reverse=True)
+        # final = [[wd[k]] if k in wd else [wod[k]] for k in keys]
+        # return final[0]
 
 
 def plus(a: int, b: int) -> int:
@@ -207,33 +246,25 @@ def main():
         # print(f"\nThese are the {sol_cnt} solutions for input {eq}:")
         solutions = [s for s in solutions if (type(s[2]) is int and s[2] == res)]
 
-        f_data = [] #-1
-        for i in get_matching_final(get_matching(csv_data)):
+        print(get_matching_final(get_matching(csv_data)))
+        # f_data = [] #-1
+        # for i in get_matching_final(get_matching(csv_data)):
 
-            f_data.append(i)
-        new_list = [x for x in get_matching_final(get_matching(csv_data))[-1]]
-        new_list2 = []
-        new_dict = {}
+        #     f_data.append(i)
+        # new_list = [x for x in get_matching_final(get_matching(csv_data))[-1]]
+        # new_dict = {}
         # print(new_list)
-        # for i in new_list:
-        #     some_str = ""
-        #     for j in i:
-        #         some_str += i
-        #     print(some_str)
-        
+      
 
-        header = ['plate_num', 'solution', 'total_num']
+        # header = ['plate_num', 'solution', 'total_num']
         
         # for n in [new_list]:
         #     print(n)
 
-        f = open('registration.csv', 'w')
-        writer = csv.writer(f)
-        writer.writerow(header)
-        # writer.writerow(f_data[0][1])
-        # for i in f_data[-1]:
-        writer.writerows(f_data)
-        f.close()
+        # f = open('registration.csv', 'w')
+        # writer = csv.writer(f)
+        
+        # f.close()
 
 
 
