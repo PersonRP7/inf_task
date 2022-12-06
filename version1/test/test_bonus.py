@@ -9,7 +9,7 @@ from bonus import has_solution
 
 #py -m unittest
 
-class TestArithmetic(unittest.TestCase):
+class TestBonus(unittest.TestCase):
 
     def setUp(self) -> None:
         self.data = [ 
