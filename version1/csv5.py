@@ -216,9 +216,6 @@ def main():
         for i in get_matching_final(get_matching(csv_data)):
 
             f_data.append(i)
-        new_list = [x for x in get_matching_final(get_matching(csv_data))[-1]]
-        new_list2 = []
-        new_dict = {}
 
         header = ['plate_num', 'solution', 'total_num']
         
