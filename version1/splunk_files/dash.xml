@@ -56,7 +56,7 @@
   <row>
     <panel>
       <single>
-        <title>Table with at least one solution</title>
+        <title>Table with a singular solution</title>
         <search>
           <query>source="reg2.csv" | where (total_count=1) | stats count</query>
           <earliest>0</earliest>
