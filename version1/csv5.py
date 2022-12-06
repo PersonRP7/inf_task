@@ -220,7 +220,7 @@ def main():
         header = ['plate_num', 'solution', 'total_num']
         
         #Use a context manager instead.
-        f = open('registration.csv', 'w')
+        f = open('reg2.csv', 'w')
         writer = csv.writer(f)
         writer.writerow(header)
         writer.writerows(f_data)
