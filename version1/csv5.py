@@ -6,13 +6,6 @@ import re
 # import csv_preprocessor
 import csv
 
-def create_csv(data):
-    header = ['plate_num', 'solution', 'total_num']
-    with open('registration.csv', mode='w', newline='') as csv_file:
-        csv_writer = csv.writer(csv_file)
-        csv_writer.writerow(header)
-        for row in data:
-            csv_writer.writerow(row)
 
 def get_matching(data):
     removed_nan = []
@@ -219,24 +212,13 @@ def main():
         new_list = [x for x in get_matching_final(get_matching(csv_data))[-1]]
         new_list2 = []
         new_dict = {}
-        # print(new_list)
-        # for i in new_list:
-        #     some_str = ""
-        #     for j in i:
-        #         some_str += i
-        #     print(some_str)
-        
 
         header = ['plate_num', 'solution', 'total_num']
         
-        # for n in [new_list]:
-        #     print(n)
-
+        #Use a context manager instead.
         f = open('registration.csv', 'w')
         writer = csv.writer(f)
         writer.writerow(header)
-        # writer.writerow(f_data[0][1])
-        # for i in f_data[-1]:
         writer.writerows(f_data)
         f.close()
 
