@@ -8,6 +8,11 @@ import csv
 
 
 def get_matching(data):
+    """
+        First pass filtering. Used as a callable by get_matching_final.
+        Removes nan instances from the data set the hands it off to
+        get_matching_final for further processing.
+    """
     removed_nan = []
     w_solution = []
     wo_solution = []
