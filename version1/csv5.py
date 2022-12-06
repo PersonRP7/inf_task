@@ -31,6 +31,10 @@ def get_matching(data):
     # w_combined =  w_solution + wo_solution #used for second pass
 
 def get_matching_final(data):
+        """
+            Separates the data received from get_matching into
+            solvable / non solvable.
+        """
         matching_middle = []
         non_matching_middle = []
 
@@ -55,8 +59,6 @@ def get_matching_final(data):
         wod = {s[0].split(',')[0]: s[0] for s in non_matching_middle}
         keys = sorted(set(wd.keys()).union(wod.keys()), reverse=True)
         final = [[wd[k]] if k in wd else [wod[k]] for k in keys]
-        # final_list = [x for x in final]
-        # final_list_unique = np.unique(final_list) 
         return final
 
 
