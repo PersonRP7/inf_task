@@ -138,6 +138,11 @@ def solve(values: Tuple[int, int, int], ops: List[Callable]) -> list[Tuple[str, 
 
 
 def inverter(data: List[int]) -> List[Tuple[int, int, int]]:
+    """
+        Creates a cartesian product of all possible sign variations
+        for every digit in a three digit list comprising a given registration
+        number.
+    """
     inverted_data = [-x for x in data]
     res = list(product(*zip(data, inverted_data)))
     return res
