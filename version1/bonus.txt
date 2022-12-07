@@ -1,0 +1,1 @@
+Performance might be enhanced my implementing multithreading / multiprocessing.
